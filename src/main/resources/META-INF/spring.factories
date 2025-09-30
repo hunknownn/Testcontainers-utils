@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+io.testcontainers.utils.spring.bootstrap.initializer.BootstrapTestContainerInitializer

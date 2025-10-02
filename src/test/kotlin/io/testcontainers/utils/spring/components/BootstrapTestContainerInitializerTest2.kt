@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(classes = [TestApplication::class])
 @BootstrapTestContainer(
     properties = [
-        ContainerProperty(component = Component.POSTGRESQL, image = "postgres:16", reuse = false)
+        ContainerProperty(component = Component.POSTGRESQL)
     ]
 )
-class BootstrapTestContainerInitializerTest : StringSpec({
+class BootstrapTestContainerInitializerTest2 : StringSpec({
 
     "test initializer" {
 

@@ -11,7 +11,7 @@ interface Container<SELF : GenericContainer<*>> {
 }
 
 enum class Recycle {
-    RECYCLE,
+    NEW,
     MERGE,
     ;
 }

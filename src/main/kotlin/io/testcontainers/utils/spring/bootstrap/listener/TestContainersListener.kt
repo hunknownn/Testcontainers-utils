@@ -8,12 +8,10 @@ import io.testcontainers.utils.spring.bootstrap.components.ContainerHouse
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.TestContext
 import org.springframework.test.context.support.AbstractTestExecutionListener
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.full.createInstance
 
 class TestContainersListener : AbstractTestExecutionListener() {
     private val logger = LoggerFactory.getLogger(this::class.java)
-    private val factories: ConcurrentHashMap<Component, Container<*>> = ConcurrentHashMap()
 
     override fun beforeTestClass(testContext: TestContext) {
         logger.info("start!")
@@ -23,6 +21,7 @@ class TestContainersListener : AbstractTestExecutionListener() {
         bootstrapped.properties.forEach { property ->
             val factory = getOrAdd(property)
             val container = factory.container(property.image, property.reuse)
+            logger.info("Container info: $container")
             container.start()
         }
     }

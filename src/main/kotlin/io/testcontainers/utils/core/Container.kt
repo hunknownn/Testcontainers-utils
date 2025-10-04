@@ -1,5 +1,6 @@
-package io.testcontainers.utils.spring.bootstrap.components
+package io.testcontainers.utils.core
 
+import io.testcontainers.utils.customizer.ContainerCustomizer
 import org.testcontainers.containers.GenericContainer
 
 interface Container<SELF : GenericContainer<*>> {
@@ -7,7 +8,7 @@ interface Container<SELF : GenericContainer<*>> {
 
     fun recycle(): Recycle
     fun supports(): Component
-    fun container(image: String, reuse: Boolean): SELF
+    fun container(image: String, customizer: ContainerCustomizer<GenericContainer<*>>): SELF
 }
 
 enum class Recycle {

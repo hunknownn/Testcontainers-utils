@@ -1,6 +1,8 @@
-package io.testcontainers.utils.spring.bootstrap.components
+package io.testcontainers.utils.core
 
-object ContainerHouse {
+import io.testcontainers.utils.factory.PostgresContainerFactory
+
+object ContainerRegistry {
     private val factories: MutableMap<Component, Container<*>> = mutableMapOf()
 
     init {

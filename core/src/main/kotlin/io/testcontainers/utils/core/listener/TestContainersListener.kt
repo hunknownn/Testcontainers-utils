@@ -1,10 +1,10 @@
-package io.testcontainers.utils.listener
+package io.testcontainers.utils.core.listener
 
-import io.testcontainers.utils.annotation.BootstrapTestContainer
-import io.testcontainers.utils.annotation.ContainerProperty
-import io.testcontainers.utils.core.Container
-import io.testcontainers.utils.core.ContainerRegistry
-import io.testcontainers.utils.customizer.ContainerCustomizer
+import io.testcontainers.utils.core.annotation.BootstrapTestContainer
+import io.testcontainers.utils.core.annotation.ContainerProperty
+import io.testcontainers.utils.core.core.Container
+import io.testcontainers.utils.core.core.ContainerRegistry
+import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.TestContext
 import org.springframework.test.context.support.AbstractTestExecutionListener

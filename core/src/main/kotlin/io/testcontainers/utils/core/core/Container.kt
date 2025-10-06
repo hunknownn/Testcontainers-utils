@@ -1,6 +1,6 @@
-package io.testcontainers.utils.core
+package io.testcontainers.utils.core.core
 
-import io.testcontainers.utils.customizer.ContainerCustomizer
+import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.testcontainers.containers.GenericContainer
 
 interface Container<SELF : GenericContainer<*>> {

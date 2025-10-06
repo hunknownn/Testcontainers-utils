@@ -1,4 +1,4 @@
-package io.testcontainers.utils.customizer
+package io.testcontainers.utils.core.customizer
 
 import org.testcontainers.containers.GenericContainer
 

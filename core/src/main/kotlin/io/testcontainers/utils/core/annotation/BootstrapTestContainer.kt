@@ -1,6 +1,6 @@
-package io.testcontainers.utils.annotation
+package io.testcontainers.utils.core.annotation
 
-import io.testcontainers.utils.listener.TestContainersListener
+import io.testcontainers.utils.core.listener.TestContainersListener
 import org.springframework.test.context.TestExecutionListeners
 import java.lang.annotation.Inherited
 

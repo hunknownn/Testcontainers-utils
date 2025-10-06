@@ -1,6 +1,6 @@
-package io.testcontainers.utils.core
+package io.testcontainers.utils.core.core
 
-import io.testcontainers.utils.factory.PostgresContainerFactory
+import io.testcontainers.utils.core.factory.PostgresContainerFactory
 
 object ContainerRegistry {
     private val factories: MutableMap<Component, Container<*>> = mutableMapOf()

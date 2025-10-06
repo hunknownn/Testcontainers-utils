@@ -1,9 +1,9 @@
-package io.testcontainers.utils.factory
+package io.testcontainers.utils.core.factory
 
-import io.testcontainers.utils.core.Component
-import io.testcontainers.utils.core.Container
-import io.testcontainers.utils.core.Recycle
-import io.testcontainers.utils.customizer.ContainerCustomizer
+import io.testcontainers.utils.core.core.Component
+import io.testcontainers.utils.core.core.Container
+import io.testcontainers.utils.core.core.Recycle
+import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName

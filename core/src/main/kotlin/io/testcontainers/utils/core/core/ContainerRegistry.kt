@@ -1,12 +1,10 @@
 package io.testcontainers.utils.core.core
 
-import io.testcontainers.utils.core.factory.PostgresContainerFactory
-
 object ContainerRegistry {
     private val factories: MutableMap<Component, Container<*>> = mutableMapOf()
 
-    init {
-        factories[Component.POSTGRESQL] = PostgresContainerFactory()
+    fun register(component: Component, container: Container<*>) {
+        this.factories[component] = container
     }
 
     fun getFactory(component: Component): Container<*> =

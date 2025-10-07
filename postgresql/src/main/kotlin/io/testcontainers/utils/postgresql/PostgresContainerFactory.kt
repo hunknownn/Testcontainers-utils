@@ -1,4 +1,4 @@
-package io.testcontainers.utils.core.factory
+package io.testcontainers.utils.postgresql
 
 import io.testcontainers.utils.core.core.Component
 import io.testcontainers.utils.core.core.Container

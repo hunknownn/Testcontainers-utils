@@ -1,5 +1,6 @@
-package io.testcontainers.utils.core.customizer
+package io.testcontainers.utils.postgresql
 
+import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.testcontainers.containers.PostgreSQLContainer
 
 class PostgresCustomizer: ContainerCustomizer<PostgreSQLContainer<*>> {

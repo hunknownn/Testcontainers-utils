@@ -37,7 +37,35 @@ class TestContainersListener : AbstractTestExecutionListener() {
 
     private fun getOrAdd(property: ContainerProperty): Container<*> {
         val factoryHint = property.factory
-        if (factoryHint == Nothing::class) return ContainerRegistry.getFactory(property.component)
+        if (factoryHint == Nothing::class) {
+            // 팩토리가 등록되지 않은 경우 기본 팩토리를 동적으로 로드
+            return try {
+                ContainerRegistry.getFactory(property.component)
+            } catch (e: IllegalStateException) {
+                logger.warn("Factory for ${property.component} not found, attempting to load default factory")
+                loadDefaultFactory(property.component)
+            }
+        }
         return ContainerRegistry.getFactoryOrAdd(property.component, property.factory.createInstance())
+    }
+
+    private fun loadDefaultFactory(component: io.testcontainers.utils.core.core.Component): Container<*> {
+        return when (component) {
+            io.testcontainers.utils.core.core.Component.POSTGRESQL -> {
+                try {
+                    // PostgreSQL 팩토리를 동적으로 로드
+                    val factoryClass = Class.forName("io.testcontainers.utils.postgresql.PostgresContainerFactory")
+                    val factory = factoryClass.getDeclaredConstructor().newInstance() as Container<*>
+                    ContainerRegistry.register(component, factory)
+                    logger.info("Dynamically loaded and registered factory for $component")
+                    factory
+                } catch (e: Exception) {
+                    logger.error("Failed to load default factory for $component", e)
+                    throw IllegalStateException("No factory available for $component", e)
+                }
+            }
+
+            else -> throw IllegalStateException("No default factory available for $component")
+        }
     }
 }

@@ -1,5 +1,15 @@
 description = "core"
 
+// 라이브러리 모듈이므로 bootJar 비활성화, jar 활성화
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.jar {
+    enabled = true
+    archiveClassifier = ""
+}
+
 dependencies {
     // 공통 의존성
     implementation("org.springframework.boot:spring-boot-starter")

@@ -1,7 +1,7 @@
 package io.testcontainers.utils.postgresql
 
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@SpringBootTest
+@SpringBootApplication
 class PostgresqlApplication {
 }

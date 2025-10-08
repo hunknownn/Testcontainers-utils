@@ -16,16 +16,14 @@ class PostgresContainerFactory : Container<PostgreSQLContainer<*>> {
         @Volatile
         private var singletonInstance: PostgreSQLContainer<*>? = null
 
-        private fun createContainer(image: String, customizer: ContainerCustomizer<PostgreSQLContainer<*>>): PostgreSQLContainer<*> {
+        private fun createContainer(image: String): PostgreSQLContainer<*> {
             val dockerImageName = image.takeIf { it.isNotBlank() } ?: Component.POSTGRESQL.defaultImage
-            return PostgreSQLContainer(DockerImageName.parse(dockerImageName)).apply {
-                customizer.customize(this)
-            }
+            return PostgreSQLContainer(DockerImageName.parse(dockerImageName))
         }
 
-        fun getSingleton(image: String, customizer: ContainerCustomizer<PostgreSQLContainer<*>>): PostgreSQLContainer<*> {
+        fun getSingleton(image: String): PostgreSQLContainer<*> {
             return singletonInstance ?: synchronized(this) {
-                singletonInstance ?: createContainer(image, customizer).also { singletonInstance = it }
+                singletonInstance ?: createContainer(image).also { singletonInstance = it }
             }
         }
     }
@@ -34,12 +32,21 @@ class PostgresContainerFactory : Container<PostgreSQLContainer<*>> {
 
     override fun supports() = component
 
-    @Suppress("UNCHECKED_CAST")
-    override fun container(image: String, customizer: ContainerCustomizer<GenericContainer<*>>): PostgreSQLContainer<*> {
-        val postgresCustomizer = customizer as ContainerCustomizer<PostgreSQLContainer<*>>
-        return when (recycle()) {
-            Recycle.MERGE -> getSingleton(image, postgresCustomizer)   // 싱글톤 재사용 (customizer 적용)
-            Recycle.NEW -> createContainer(image, postgresCustomizer)  // 항상 새로운 컨테이너 생성 (customizer 적용)
+    override fun customize(container: PostgreSQLContainer<*>) {
+        container.apply {
+            withDatabaseName("test")
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun container(image: String, customizer: ContainerCustomizer<PostgreSQLContainer<*>>): PostgreSQLContainer<*> {
+        val container =  when (recycle()) {
+            Recycle.MERGE -> getSingleton(image)
+            Recycle.NEW -> createContainer(image)
+        }
+        customize(container)
+        customizer.customize(container)
+
+        return container
     }
 }

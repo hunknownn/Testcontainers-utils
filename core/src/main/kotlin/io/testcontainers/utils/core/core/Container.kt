@@ -8,7 +8,8 @@ interface Container<SELF : GenericContainer<*>> {
 
     fun recycle(): Recycle
     fun supports(): Component
-    fun container(image: String, customizer: ContainerCustomizer<GenericContainer<*>>): SELF
+    fun container(image: String, customizer: ContainerCustomizer<SELF>): SELF
+    fun customize(container: SELF)
 }
 
 enum class Recycle {

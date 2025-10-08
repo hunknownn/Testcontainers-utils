@@ -1,18 +1,21 @@
 package io.testcontainers.utils.core.core
 
-object ContainerRegistry {
-    private val factories: MutableMap<Component, Container<*>> = mutableMapOf()
+import org.testcontainers.containers.GenericContainer
 
-    fun register(component: Component, container: Container<*>) {
+object ContainerRegistry {
+    private val factories: MutableMap<Component, Container<out GenericContainer<*>>> = mutableMapOf()
+
+    fun <T : GenericContainer<*>> register(component: Component, container: Container<T>) {
         this.factories[component] = container
     }
 
-    fun getFactory(component: Component): Container<*> =
-        factories[component] ?: error("No factory registered for $component")
+    @Suppress("UNCHECKED_CAST")
+    fun <T : GenericContainer<*>> getFactory(component: Component): Container<T> =
+        factories[component] as? Container<T>
+            ?: error("No factory registered for $component")
 
-    fun getFactoryOrAdd(component: Component, container: Container<*>): Container<*> =
-        factories.getOrElse(component) {
-            factories[component] = container
-            container
-        }
+    @Suppress("UNCHECKED_CAST")
+    fun <T : GenericContainer<*>> getFactoryOrAdd(component: Component, container: Container<*>): Container<T> =
+        factories.getOrPut(component) { container } as Container<T>
+
 }

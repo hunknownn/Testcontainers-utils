@@ -1,6 +1,6 @@
 package io.testcontainers.utils.core.annotation
 
-import io.testcontainers.utils.core.listener.TestContainersListener
+import io.testcontainers.utils.core.listener.TestcontainersListener
 import org.springframework.test.context.TestExecutionListeners
 import java.lang.annotation.Inherited
 
@@ -8,10 +8,10 @@ import java.lang.annotation.Inherited
 @Retention(AnnotationRetention.RUNTIME)
 @Inherited
 @TestExecutionListeners(
-    listeners = [TestContainersListener::class],
+    listeners = [TestcontainersListener::class],
     mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
 )
-annotation class BootstrapTestContainer(
+annotation class BootstrapTestcontainers(
     val properties: Array<ContainerProperty> = []
 )
 

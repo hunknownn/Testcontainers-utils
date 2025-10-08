@@ -1,6 +1,6 @@
 package io.testcontainers.utils.core.listener
 
-import io.testcontainers.utils.core.annotation.BootstrapTestContainer
+import io.testcontainers.utils.core.annotation.BootstrapTestcontainers
 import io.testcontainers.utils.core.annotation.ContainerProperty
 import io.testcontainers.utils.core.core.Container
 import io.testcontainers.utils.core.core.ContainerRegistry
@@ -12,13 +12,13 @@ import org.testcontainers.containers.GenericContainer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
-class TestContainersListener : AbstractTestExecutionListener() {
+class TestcontainersListener : AbstractTestExecutionListener() {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun beforeTestClass(testContext: TestContext) {
         logger.info("start!")
         val testClass = testContext.testClass
-        val bootstrapped = testClass.getAnnotation(BootstrapTestContainer::class.java)
+        val bootstrapped = testClass.getAnnotation(BootstrapTestcontainers::class.java)
 
         bootstrapped.properties.forEach { property ->
             val factory = getOrAdd(property)

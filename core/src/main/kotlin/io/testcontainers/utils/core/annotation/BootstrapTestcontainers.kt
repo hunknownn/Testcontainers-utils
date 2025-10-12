@@ -1,6 +1,6 @@
 package io.testcontainers.utils.core.annotation
 
-import io.testcontainers.utils.core.listener.TestcontainersListener
+import io.testcontainers.utils.core.listener.TestcontainersStarter
 import org.springframework.test.context.TestExecutionListeners
 import java.lang.annotation.Inherited
 
@@ -8,7 +8,7 @@ import java.lang.annotation.Inherited
 @Retention(AnnotationRetention.RUNTIME)
 @Inherited
 @TestExecutionListeners(
-    listeners = [TestcontainersListener::class],
+    listeners = [TestcontainersStarter::class],
     mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS
 )
 annotation class BootstrapTestcontainers(

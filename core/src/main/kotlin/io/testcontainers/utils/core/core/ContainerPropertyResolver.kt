@@ -19,31 +19,21 @@ internal object ContainerPropertyResolver {
     }
 
     private fun <T : GenericContainer<*>> getOrAdd(property: ContainerProperty): Container<T> {
-        val factoryHint = property.factory
+        val factoryHint = property.factoryHint
         return if (factoryHint == Nothing::class) {
             try {
                 ContainerRegistry.getFactory(property.component)
             } catch (e: IllegalStateException) {
-                logger.warn("Factory for ${property.component} not found, attempting to load default factory")
-                loadDefaultFactory(property.component)
+                logger.warn("Factory for ${property.component} not found, using NoopContainer as fallback")
+                fallbackContainer()
             }
         } else {
-            ContainerRegistry.getFactoryOrAdd(property.component, property.factory.createInstance())
+            ContainerRegistry.getFactoryOrAdd(property.component, property.factoryHint.createInstance())
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T : GenericContainer<*>> loadDefaultFactory(component: Component): Container<T> {
-        return when (component) {
-            Component.POSTGRESQL -> {
-                val factoryClass = Class.forName("io.testcontainers.utils.postgresql.PostgresContainerFactory")
-                val factory = factoryClass.getDeclaredConstructor().newInstance() as Container<T>
-                ContainerRegistry.register(component, factory)
-                logger.info("Dynamically loaded and registered factory for $component")
-                factory
-            }
-
-            else -> throw IllegalStateException("No default factory available for $component")
-        }
+    private fun <T : GenericContainer<*>> fallbackContainer(): Container<T> {
+        return NoopContainer() as Container<T>
     }
 }

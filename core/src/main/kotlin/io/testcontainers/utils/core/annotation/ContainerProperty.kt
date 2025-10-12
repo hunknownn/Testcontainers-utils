@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ContainerProperty(
     val component: Component,
-    val factory: KClass<out Container<*>> = Nothing::class,
+    val factoryHint: KClass<out Container<*>> = Nothing::class,
     val image: String = "",
     val customizer: KClass<out ContainerCustomizer<*>> = NoopCustomizer::class
 )

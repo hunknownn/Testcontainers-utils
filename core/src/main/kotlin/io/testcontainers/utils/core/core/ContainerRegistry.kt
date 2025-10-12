@@ -17,5 +17,4 @@ object ContainerRegistry {
     @Suppress("UNCHECKED_CAST")
     fun <T : GenericContainer<*>> getFactoryOrAdd(component: Component, container: Container<*>): Container<T> =
         factories.getOrPut(component) { container } as Container<T>
-
 }

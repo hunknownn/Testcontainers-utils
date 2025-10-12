@@ -4,13 +4,16 @@ import io.testcontainers.utils.core.core.Component
 import io.testcontainers.utils.core.core.Container
 import io.testcontainers.utils.core.core.Recycle
 import io.testcontainers.utils.core.customizer.ContainerCustomizer
-import org.testcontainers.containers.GenericContainer
+import org.slf4j.LoggerFactory
+import org.springframework.core.env.ConfigurableEnvironment
+import org.springframework.core.env.MapPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 
 class PostgresContainerFactory : Container<PostgreSQLContainer<*>> {
 
     override val component: Component = Component.POSTGRESQL
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     companion object {
         @Volatile
@@ -48,5 +51,23 @@ class PostgresContainerFactory : Container<PostgreSQLContainer<*>> {
         customizer.customize(container)
 
         return container
+    }
+
+    override fun injectProperties(container: PostgreSQLContainer<*>, environment: ConfigurableEnvironment) {
+        val properties = mutableMapOf<String, Any>()
+
+        properties["spring.datasource.url"] = container.jdbcUrl
+        properties["spring.datasource.username"] = container.username
+        properties["spring.datasource.password"] = container.password
+        properties["spring.datasource.driver-class-name"] = container.driverClassName
+
+        logger.info("Injecting PostgreSQL container properties:")
+        logger.info("  URL: ${container.jdbcUrl}")
+        logger.info("  Username: ${container.username}")
+        logger.info("  Driver: ${container.driverClassName}")
+
+        val propertySource = MapPropertySource("testcontainers-postgresql", properties)
+        environment.propertySources.addFirst(propertySource)
+        logger.info("Added ${properties.size} PostgreSQL properties to environment")
     }
 }

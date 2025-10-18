@@ -1,25 +1,24 @@
 package io.testcontainers.utils.core.core
 
-import io.testcontainers.utils.core.customizer.ContainerCustomizer
-import org.springframework.core.env.ConfigurableEnvironment
 import org.testcontainers.containers.GenericContainer
 
-class NoopContainer : Container<GenericContainer<*>> {
+class NoopContainer : AbstractContainer<GenericContainer<*>>() {
 
     override val component: Component = Component.NONE
 
-    override fun recycle(): Recycle = Recycle.NEW
-
     override fun supports(): Component = component
 
-    override fun injectProperties(container: GenericContainer<*>, environment: ConfigurableEnvironment) = Unit
+    override fun container(): GenericContainer<*> {
+        return NoopGenericContainer(component.defaultImage)
+    }
 
-    override fun customize(container: GenericContainer<*>) = Unit
-
-    override fun container(image: String, customizer: ContainerCustomizer<GenericContainer<*>>): GenericContainer<*> {
-        class NoopGenericContainer(image: String) : GenericContainer<NoopGenericContainer>(image) {
-            override fun start() = Unit
-        }
+    override fun container(image: String): GenericContainer<*> {
         return NoopGenericContainer(image)
     }
+
+    override fun customize(container: GenericContainer<*>) = Unit
+}
+
+class NoopGenericContainer(image: String) : GenericContainer<NoopGenericContainer>(image) {
+    override fun start() = Unit
 }

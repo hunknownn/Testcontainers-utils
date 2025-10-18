@@ -1,20 +1,44 @@
 package io.testcontainers.utils.core.core
 
+import io.testcontainers.utils.core.annotation.ConflictingContainerConfigurationDefinitionException
 import org.testcontainers.containers.GenericContainer
 
 object ContainerRegistry {
-    private val factories: MutableMap<Component, Container<out GenericContainer<*>>> = mutableMapOf()
+    private val components: MutableMap<Component, String> = mutableMapOf()
+    private val configurations: MutableMap<String, ContainerConfiguration<out GenericContainer<*>>> = mutableMapOf()
 
-    fun <T : GenericContainer<*>> register(component: Component, container: Container<T>) {
-        this.factories[component] = container
+    internal fun register(
+        component: Component,
+        key: String,
+        configuration: ContainerConfiguration<out GenericContainer<*>>
+    ) {
+        if (components.containsKey(component) || configurations.containsKey(key)) throw ConflictingContainerConfigurationDefinitionException()
+
+        this.components[component] = key
+        this.configurations[key] = configuration
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : GenericContainer<*>> getFactory(component: Component): Container<T> =
-        factories[component] as? Container<T>
-            ?: error("No factory registered for $component")
+    fun register(
+        key: String,
+        configuration: ContainerConfiguration<out GenericContainer<*>>
+    ): ContainerConfiguration<out GenericContainer<*>> {
+        if (configurations.containsKey(key)) {
+            throw ConflictingContainerConfigurationDefinitionException()
+        }
+        this.configurations[key] = configuration
+        return configuration
+    }
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : GenericContainer<*>> getFactoryOrAdd(component: Component, container: Container<*>): Container<T> =
-        factories.getOrPut(component) { container } as Container<T>
+    fun getConfiguration(component: Component): ContainerConfiguration<out GenericContainer<*>> {
+        val key = components[component] ?: error("No configuration registered for component $component")
+        return getConfiguration(key)
+    }
+
+    fun getConfiguration(key: String): ContainerConfiguration<out GenericContainer<*>> {
+        return configurations[key] ?: error("No configuration registered for $key")
+    }
+
+    fun getConfigurations(): Map<String, ContainerConfiguration<out GenericContainer<*>>> {
+        return configurations.toMap()
+    }
 }

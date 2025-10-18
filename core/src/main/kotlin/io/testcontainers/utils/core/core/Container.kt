@@ -1,17 +1,32 @@
 package io.testcontainers.utils.core.core
 
 import io.testcontainers.utils.core.customizer.ContainerCustomizer
-import org.springframework.core.env.ConfigurableEnvironment
+import io.testcontainers.utils.core.injectable.PropertyInjector
 import org.testcontainers.containers.GenericContainer
 
 interface Container<SELF : GenericContainer<*>> {
     val component: Component
 
-    fun recycle(): Recycle
     fun supports(): Component
-    fun container(image: String, customizer: ContainerCustomizer<SELF>): SELF
+
+    fun container(): SELF
+
+    fun container(image: String): SELF
+
+    fun containerShell(
+        recycle: Recycle,
+        customizer: ContainerCustomizer<SELF>?,
+        injectable: PropertyInjector<SELF>?
+    ): ContainerConfiguration<SELF>
+
+    fun containerShell(
+        image: String,
+        recycle: Recycle,
+        customizer: ContainerCustomizer<SELF>?,
+        injectable: PropertyInjector<SELF>?
+    ): ContainerConfiguration<SELF>
+
     fun customize(container: SELF)
-    fun injectProperties(container: SELF, environment: ConfigurableEnvironment)
 }
 
 enum class Recycle {

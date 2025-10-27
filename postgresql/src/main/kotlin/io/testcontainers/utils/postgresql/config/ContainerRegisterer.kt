@@ -27,7 +27,7 @@ class ContainerRegisterer : AbstractTestExecutionListener() {
                 customize = { PostgresCustomizer() },
                 injectable = { _, _ -> },
             )
-            ContainerRegistry.register(config.key(), config)
+            ContainerRegistry.registerNewly(config.key(""), config)
             logger.info("PostgreSQL container factory registered successfully")
         } catch (e: Exception) {
             logger.error("Failed to register PostgreSQL container factory", e)

@@ -1,4 +1,4 @@
-package io.testcontainers.utils.core
+package io.testcontainers.utils.core.container
 
 import io.testcontainers.utils.core.core.AbstractContainer
 import io.testcontainers.utils.core.core.Component
@@ -20,11 +20,10 @@ class TestGenericContainer : AbstractContainer<GenericContainer<*>>() {
     }
 
     override fun customize(container: GenericContainer<*>) {
-        val hash = container.dockerClient.createContainerCmd("alpine:3.17")
-//        container.hash()
         container.apply {
             withLabel("managed-by", "testcontainers-utils")
             withLabel("factory", "TestGenericContainer")
+            withEnv("TEST_ENV", "test-value")
         }
     }
 }

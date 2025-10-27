@@ -34,10 +34,12 @@ class ContainerConfiguration<T : GenericContainer<*>>(
         return result
     }
 
-    fun key() = "${factoryHint.simpleName}#${hashCode().absoluteValue}"
+    fun key(value:String) : String {
+        if(value.isNotBlank()) return "$value#${container.dockerImageName}"
+        return "${factoryHint.simpleName}#${hashCode().absoluteValue}"
+    }
 
     fun customizeContainer() {
-        println("container = ${container}")
         customize.invoke(container)
     }
 

@@ -1,7 +1,7 @@
 package io.testcontainers.utils.core.core
 
 import io.testcontainers.utils.core.customizer.ContainerCustomizer
-import io.testcontainers.utils.core.injectable.PropertyInjector
+import io.testcontainers.utils.core.injectable.ContainerPropertyInjector
 import org.testcontainers.containers.GenericContainer
 
 interface Container<SELF : GenericContainer<*>> {
@@ -16,14 +16,14 @@ interface Container<SELF : GenericContainer<*>> {
     fun containerShell(
         recycle: Recycle,
         customizer: ContainerCustomizer<SELF>?,
-        injectable: PropertyInjector<SELF>?
+        injectable: ContainerPropertyInjector<SELF>?
     ): ContainerConfiguration<SELF>
 
     fun containerShell(
         image: String,
         recycle: Recycle,
         customizer: ContainerCustomizer<SELF>?,
-        injectable: PropertyInjector<SELF>?
+        injectable: ContainerPropertyInjector<SELF>?
     ): ContainerConfiguration<SELF>
 
     fun customize(container: SELF)

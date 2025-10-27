@@ -1,7 +1,7 @@
 package io.testcontainers.utils.core.core
 
 import io.testcontainers.utils.core.customizer.ContainerCustomizer
-import io.testcontainers.utils.core.injectable.PropertyInjector
+import io.testcontainers.utils.core.injectable.ContainerPropertyInjector
 import org.testcontainers.containers.GenericContainer
 
 abstract class AbstractContainer<T : GenericContainer<*>> : Container<T> {
@@ -9,7 +9,7 @@ abstract class AbstractContainer<T : GenericContainer<*>> : Container<T> {
     override fun containerShell(
         recycle: Recycle,
         customizer: ContainerCustomizer<T>?,
-        injectable: PropertyInjector<T>?
+        injectable: ContainerPropertyInjector<T>?
     ): ContainerConfiguration<T> {
         return containerShell(component.defaultImage, recycle, customizer, injectable)
     }
@@ -18,7 +18,7 @@ abstract class AbstractContainer<T : GenericContainer<*>> : Container<T> {
         image: String,
         recycle: Recycle,
         customizer: ContainerCustomizer<T>?,
-        injectable: PropertyInjector<T>?
+        injectable: ContainerPropertyInjector<T>?
     ): ContainerConfiguration<T> {
         return ContainerConfiguration(
             component = component,

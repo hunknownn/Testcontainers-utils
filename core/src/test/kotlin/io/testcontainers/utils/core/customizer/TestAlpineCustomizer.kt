@@ -1,6 +1,5 @@
-package io.testcontainers.utils.core
+package io.testcontainers.utils.core.customizer
 
-import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.testcontainers.containers.GenericContainer
 
 class TestAlpineCustomizer : ContainerCustomizer<GenericContainer<*>> {

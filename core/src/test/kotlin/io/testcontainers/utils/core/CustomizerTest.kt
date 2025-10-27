@@ -3,7 +3,9 @@ package io.testcontainers.utils.core
 import io.kotest.matchers.equals.shouldBeEqual
 import io.testcontainers.utils.core.annotation.BootstrapTestcontainers
 import io.testcontainers.utils.core.annotation.ContainerProperty
+import io.testcontainers.utils.core.container.TestGenericContainer
 import io.testcontainers.utils.core.core.*
+import io.testcontainers.utils.core.customizer.TestAlpineCustomizer
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 

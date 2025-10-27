@@ -1,4 +1,4 @@
-package io.testcontainers.utils.core
+package io.testcontainers.utils.core.provider
 
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware

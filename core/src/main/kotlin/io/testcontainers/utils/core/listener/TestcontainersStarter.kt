@@ -3,11 +3,14 @@ package io.testcontainers.utils.core.listener
 import com.github.dockerjava.api.command.CreateContainerCmd
 import io.testcontainers.utils.core.annotation.BootstrapTestcontainers
 import io.testcontainers.utils.core.core.ContainerPropertyResolver.resolveFactory
+import io.testcontainers.utils.core.core.ContainerRegistry
+import io.testcontainers.utils.core.core.Recycle
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.test.context.TestContext
 import org.springframework.test.context.support.AbstractTestExecutionListener
 import org.testcontainers.UnstableAPI
+import org.testcontainers.containers.GenericContainer
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.MapperFeature
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.SerializationFeature
 import org.testcontainers.shaded.com.github.dockerjava.core.DefaultDockerClientConfig
@@ -26,24 +29,36 @@ class TestcontainersStarter : AbstractTestExecutionListener() {
         val bootstrapped = testClass.getAnnotation(BootstrapTestcontainers::class.java)
 
         bootstrapped.properties.forEach { property ->
-            val containerConfiguration = resolveFactory(property)
-            logger.info("Resolved container configuration for ${property.component} with image ${property.image} by ${containerConfiguration.key()}")
+            val (key, containerConfiguration) = resolveFactory(property)
+            logger.info("Resolved container configuration for ${property.component} with image ${property.image} by $key")
+
             val container = containerConfiguration.container
-            container.apply {
-                withStartupAttempts(3)
-                getCreateContainerCmdModifiers()
-            }
-            val containerCmd1 = container.dockerClient.createContainerCmd(container.dockerImageName)
 
             containerConfiguration.customizeContainer()
-            val containerCmd2 = container.dockerClient.createContainerCmd(container.dockerImageName)
-//            val hash = containerCmd
-            println("containerCmd1 = ${containerCmd1}")
-            println("containerCmd2 = ${containerCmd2}")
-            container.start()
 
-            val env = testContext.applicationContext.environment as ConfigurableEnvironment
-            containerConfiguration.inject(env)
+            val isNewlyStarting = container.start(property.recycle, key)
+            if (isNewlyStarting) {
+                val env = testContext.applicationContext.environment as ConfigurableEnvironment
+                containerConfiguration.inject(env)
+            }
+        }
+    }
+
+    private fun GenericContainer<*>.start(recycle: Recycle, key: String): Boolean {
+        val hash = hash(this.dockerClient.createContainerCmd(this.dockerImageName))
+
+        return when (recycle) {
+            Recycle.MERGE -> {
+                val isNewly = ContainerRegistry.mergeStart(hash, key) != null
+                if (isNewly) this.start()
+                return isNewly
+            }
+
+            Recycle.NEW -> {
+                ContainerRegistry.newlyStart(hash, key, this)
+                this.start()
+                return true
+            }
         }
     }
 

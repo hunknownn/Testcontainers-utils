@@ -25,9 +25,9 @@ object ContainerFactoryDiscovery {
                     @Suppress("UNCHECKED_CAST")
                     val factoryHint = factory as Container<GenericContainer<*>>
                     val containerConfiguration = factoryHint.containerShell(Recycle.NEW, null, null)
-                    val key = containerConfiguration.key()
+                    val key = containerConfiguration.key("")
                     ContainerRegistry.register(containerConfiguration.component, key, containerConfiguration)
-                    logger.info("Registered container factory for component: ${factoryHint.component}")
+                    logger.debug("Registered container factory for component: ${factoryHint.component}")
                 } catch (e: Exception) {
                     logger.error("Failed to register factory: ${factory::class.java.name}", e)
                 }

@@ -1,4 +1,2 @@
 io.testcontainers.utils.core.core.Container=\
   io.testcontainers.utils.postgresql.PostgresContainerFactory
-org.springframework.test.context.TestExecutionListener=\
-  io.testcontainers.utils.postgresql.config.ContainerRegisterer

@@ -10,8 +10,6 @@ abstract class AbstractContainerPropertyInjector<T : GenericContainer<*>> : Cont
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun inject(environment: ConfigurableEnvironment, property: MapPropertySource) {
-        println("environment = ${environment}")
-        println("property = ${property}")
         val source = property.source
         val mapPropertySource = environment.propertySources.get(name)
 

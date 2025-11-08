@@ -20,7 +20,11 @@ subprojects {
     apply(plugin = "kotlin-spring")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "com.vanniktech.maven.publish")
+
+    // spring-example은 예제 프로젝트이므로 Maven 배포에서 제외
+    if (project.name != "spring-example") {
+        apply(plugin = "com.vanniktech.maven.publish")
+    }
 
     configure<JavaPluginExtension> {
         toolchain {
@@ -39,33 +43,35 @@ subprojects {
         useJUnitPlatform()
     }
 
-    // Maven Central 배포 공통 설정
-    configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
-        publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
-        signAllPublications()
+    // Maven Central 배포 공통 설정 (spring-example 제외)
+    if (project.name != "spring-example") {
+        configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+            publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+            signAllPublications()
 
-        pom {
-            url.set("https://github.com/hunknownn/Testcontainers-utils")
-
-            licenses {
-                license {
-                    name.set("The Apache License, Version 2.0")
-                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                }
-            }
-
-            developers {
-                developer {
-                    id.set("hunknownn")
-                    name.set("Donghun Kim")
-                    email.set("zhfptm12@gmail.com")
-                }
-            }
-
-            scm {
-                connection.set("scm:git:git://github.com/hunknownn/Testcontainers-utils.git")
-                developerConnection.set("scm:git:ssh://github.com/hunknownn/Testcontainers-utils.git")
+            pom {
                 url.set("https://github.com/hunknownn/Testcontainers-utils")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("hunknownn")
+                        name.set("Donghun Kim")
+                        email.set("zhfptm12@gmail.com")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/hunknownn/Testcontainers-utils.git")
+                    developerConnection.set("scm:git:ssh://github.com/hunknownn/Testcontainers-utils.git")
+                    url.set("https://github.com/hunknownn/Testcontainers-utils")
+                }
             }
         }
     }

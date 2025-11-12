@@ -1,5 +1,5 @@
 org.springframework.test.context.TestExecutionListener=\
-  io.testcontainers.utils.core.listener.ContainerDiscovery
+  io.testcontainers.utils.core.listener.ContainerDiscovery,\
 #  io.testcontainers.utils.core.listener.TestcontainersStarter
 
 # Use ContextCustomizer instead of TestcontainersStarter to inject properties before ApplicationContext refresh

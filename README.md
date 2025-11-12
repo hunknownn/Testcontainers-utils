@@ -1,6 +1,7 @@
 # Testcontainers-Utils
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.hunknownn/testcontainers-utils-core)](https://central.sonatype.com/artifact/io.github.hunknownn/testcontainers-utils-core)
+[![Maven Central - Core](https://img.shields.io/maven-central/v/io.github.hunknownn/testcontainers-utils-core?label=core)](https://central.sonatype.com/artifact/io.github.hunknownn/testcontainers-utils-core)
+[![Maven Central - PostgreSQL](https://img.shields.io/maven-central/v/io.github.hunknownn/testcontainers-utils-postgresql?label=postgresql)](https://central.sonatype.com/artifact/io.github.hunknownn/testcontainers-utils-postgresql)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.9.25-blue.svg?logo=kotlin)](http://kotlinlang.org)
 

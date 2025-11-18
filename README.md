@@ -306,19 +306,3 @@ PostgreSQL 컨테이너 지원 모듈입니다.
 ## 라이선스
 
 이 프로젝트는 [Apache License 2.0](LICENSE) 라이선스로 배포됩니다.
-
-## 기여하기
-
-이슈 제기, 기능 제안, 풀 리퀘스트 모두 환영합니다!
-
-1. 이 저장소를 Fork 하세요
-2. Feature 브랜치를 생성하세요 (`git checkout -b feature/amazing-feature`)
-3. 변경사항을 커밋하세요 (`git commit -m 'Add some amazing feature'`)
-4. 브랜치에 Push 하세요 (`git push origin feature/amazing-feature`)
-5. Pull Request를 생성하세요
-
-## 문의
-
-- **Author**: Donghun Kim
-- **Email**: zhfptm12@gmail.com
-- **GitHub**: [@hunknownn](https://github.com/hunknownn)

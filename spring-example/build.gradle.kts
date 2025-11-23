@@ -11,25 +11,23 @@ tasks.jar {
 
 dependencies {
     // Spring Boot
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.boot.starter.data.jpa)
+    implementation(libs.kotlin.reflect)
 
     // PostgreSQL
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly(libs.postgresql)
 
     // Test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.testcontainers:postgresql")
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.kotlin.test.junit5)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.testcontainers.postgresql)
 
     // 로컬 프로젝트 모듈 사용
-    testImplementation(project(":core"))
-    testImplementation(project(":postgresql"))
+    testImplementation(projects.core)
+    testImplementation(projects.postgresql)
 
     // Kotest
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+    testImplementation(libs.bundles.kotest)
 }

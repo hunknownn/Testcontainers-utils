@@ -21,25 +21,23 @@ mavenPublishing {
 
 dependencies {
     // Spring Boot
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework:spring-test:6.2.10")
+    implementation(libs.spring.boot.starter)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.spring.test)
 
     // Testcontainers
-    implementation("org.springframework.boot:spring-boot-testcontainers")
-    implementation("org.testcontainers:junit-jupiter")
-    implementation("org.testcontainers:postgresql")
+    implementation(libs.spring.boot.testcontainers)
+    implementation(libs.testcontainers.junit.jupiter)
+    implementation(libs.testcontainers.postgresql)
 
     // Test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.kotlin.test.junit5)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     // Kotest
-    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
-    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+    testImplementation(libs.bundles.kotest)
 
     // Test containers
-    testImplementation("org.testcontainers:mongodb")
+    testImplementation(libs.testcontainers.mongodb)
 }

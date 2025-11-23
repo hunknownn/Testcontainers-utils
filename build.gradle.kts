@@ -26,6 +26,17 @@ subprojects {
         apply(plugin = "com.vanniktech.maven.publish")
     }
 
+    // 공통 의존성
+    dependencies {
+        "implementation"(rootProject.libs.spring.boot.starter)
+        "implementation"(rootProject.libs.kotlin.reflect)
+
+        "testImplementation"(rootProject.libs.spring.boot.starter.test)
+        "testImplementation"(rootProject.libs.kotlin.test.junit5)
+        "testRuntimeOnly"(rootProject.libs.junit.platform.launcher)
+        "testImplementation"(rootProject.libs.bundles.kotest)
+    }
+
     configure<JavaPluginExtension> {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))

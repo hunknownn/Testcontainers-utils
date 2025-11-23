@@ -20,9 +20,7 @@ mavenPublishing {
 }
 
 dependencies {
-    // Spring Boot
-    implementation(libs.spring.boot.starter)
-    implementation(libs.kotlin.reflect)
+    // Spring
     implementation(libs.spring.test)
 
     // Testcontainers
@@ -30,14 +28,6 @@ dependencies {
     implementation(libs.testcontainers.junit.jupiter)
     implementation(libs.testcontainers.postgresql)
 
-    // Test dependencies
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.kotlin.test.junit5)
-    testRuntimeOnly(libs.junit.platform.launcher)
-
-    // Kotest
-    testImplementation(libs.bundles.kotest)
-
-    // Test containers
+    // Test containers (for testing)
     testImplementation(libs.testcontainers.mongodb)
 }

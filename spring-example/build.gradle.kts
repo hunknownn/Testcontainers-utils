@@ -10,24 +10,16 @@ tasks.jar {
 }
 
 dependencies {
-    // Spring Boot
-    implementation(libs.spring.boot.starter)
+    // Spring Boot (추가 모듈)
     implementation(libs.spring.boot.starter.data.jpa)
-    implementation(libs.kotlin.reflect)
 
     // PostgreSQL
     runtimeOnly(libs.postgresql)
 
-    // Test dependencies
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.kotlin.test.junit5)
-    testRuntimeOnly(libs.junit.platform.launcher)
+    // Testcontainers
     testImplementation(libs.testcontainers.postgresql)
 
     // 로컬 프로젝트 모듈 사용
     testImplementation(projects.core)
     testImplementation(projects.postgresql)
-
-    // Kotest
-    testImplementation(libs.bundles.kotest)
 }

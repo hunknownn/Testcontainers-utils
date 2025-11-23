@@ -2,6 +2,7 @@ package io.testcontainers.utils.core.core
 
 import org.springframework.core.env.ConfigurableEnvironment
 import org.testcontainers.containers.GenericContainer
+import java.util.Objects
 import kotlin.math.absoluteValue
 import kotlin.reflect.KClass
 
@@ -14,24 +15,29 @@ class ContainerConfiguration<T : GenericContainer<*>>(
     val injectable: (T, ConfigurableEnvironment) -> Unit,
 ) {
 
-    override fun hashCode(): Int {
-        var result = component.hashCode()
-        result = 31 * result + recycle.hashCode()
-        result = 31 * result + container.dockerImageName.hashCode()
-        result = 31 * result + container.javaClass.hashCode()
+    override fun hashCode(): Int = when (recycle) {
+        Recycle.NEW -> System.identityHashCode(this)
+        Recycle.MERGE -> Objects.hash(
+            component,
+            recycle,
+            container.dockerImageName,
+            container.javaClass,
+            customize.javaClass,
+            injectable.javaClass
+        )
+    }
 
-        result = 31 * result + customize.javaClass.hashCode()
-        result = 31 * result + injectable.javaClass.hashCode()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ContainerConfiguration<*>) return false
+        if (recycle == Recycle.NEW || other.recycle == Recycle.NEW) return false
 
-        result = 31 * result + customize.toString().hashCode()
-        result = 31 * result + injectable.toString().hashCode()
-
-        if (recycle == Recycle.NEW) {
-            result = 31 * result + System.nanoTime().hashCode()
-            result = 31 * result + kotlin.random.Random.nextInt().hashCode()
-        }
-
-        return result
+        return component == other.component &&
+            recycle == other.recycle &&
+            container.dockerImageName == other.container.dockerImageName &&
+            container.javaClass == other.container.javaClass &&
+            customize.javaClass == other.customize.javaClass &&
+            injectable.javaClass == other.injectable.javaClass
     }
 
     fun key(value:String) : String {

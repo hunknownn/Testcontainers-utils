@@ -14,35 +14,38 @@ internal object ContainerPropertyResolver {
         return getOrAdd(property)
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun getOrAdd(property: ContainerProperty): Pair<String, ContainerConfiguration<out GenericContainer<*>>> {
         val factoryHint = property.factoryHint
         return if (factoryHint == Nothing::class) {
             try {
                 if (property.value.isBlank()) ContainerRegistry.getConfiguration(property.component)
-                else Pair(property.value, ContainerRegistry.getConfiguration(property.value))
+                else property.value to ContainerRegistry.getConfiguration(property.value)
             } catch (e: IllegalStateException) {
                 logger.warn("Factory for ${property.component} not found, using NoopContainer as fallback")
                 fallbackContainer(property)
             }
         } else {
-            val factory = factoryHint.createInstance() as Container<GenericContainer<*>>
-            val configuration =
-                factory.containerShell(
-                    property.image,
-                    property.recycle,
-                    resolveCustomizer(property.customizer),
-                    resolveInjectable(property.injectable)
-                )
+            val factory = createContainerFactory(factoryHint)
+            val configuration = factory.containerShell(
+                property.image,
+                property.recycle,
+                resolveCustomizer(property.customizer),
+                resolveInjectable(property.injectable)
+            )
             val key = configuration.key(property.value)
-            return when (property.recycle) {
-                Recycle.MERGE -> {
-                    Pair(key, ContainerRegistry.registerMerge(key, configuration))
-                }
-                Recycle.NEW -> {
-                    Pair(key, ContainerRegistry.registerNewly(key, configuration))
-                }
+            key to when (property.recycle) {
+                Recycle.MERGE -> ContainerRegistry.registerMerge(key, configuration)
+                Recycle.NEW -> ContainerRegistry.registerNewly(key, configuration)
             }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun createContainerFactory(factoryHint: kotlin.reflect.KClass<*>): Container<GenericContainer<*>> {
+        return runCatching {
+            factoryHint.createInstance() as Container<GenericContainer<*>>
+        }.getOrElse { e ->
+            throw IllegalStateException("Cannot instantiate container factory: ${factoryHint.qualifiedName}", e)
         }
     }
 
@@ -60,11 +63,19 @@ internal object ContainerPropertyResolver {
 
     @Suppress("UNCHECKED_CAST")
     private fun <T : GenericContainer<*>> resolveCustomizer(customizerClass: KClass<out ContainerCustomizer<*>>): ContainerCustomizer<T> {
-        return customizerClass.createInstance() as ContainerCustomizer<T>
+        return runCatching {
+            customizerClass.createInstance() as ContainerCustomizer<T>
+        }.getOrElse { e ->
+            throw IllegalStateException("Cannot instantiate customizer: ${customizerClass.qualifiedName}", e)
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun <T : GenericContainer<*>> resolveInjectable(injectableClass: KClass<out ContainerPropertyInjector<*>>): ContainerPropertyInjector<T> {
-        return injectableClass.createInstance() as ContainerPropertyInjector<T>
+        return runCatching {
+            injectableClass.createInstance() as ContainerPropertyInjector<T>
+        }.getOrElse { e ->
+            throw IllegalStateException("Cannot instantiate injectable: ${injectableClass.qualifiedName}", e)
+        }
     }
 }

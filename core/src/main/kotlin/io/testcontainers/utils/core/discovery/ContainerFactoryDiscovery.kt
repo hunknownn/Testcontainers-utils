@@ -22,12 +22,16 @@ object ContainerFactoryDiscovery {
 
             factories.forEach { factory ->
                 try {
+                    if (factory !is Container<*>) {
+                        throw IllegalArgumentException("${factory::class.java.name} is not a valid Container")
+                    }
+
                     @Suppress("UNCHECKED_CAST")
-                    val factoryHint = factory as Container<GenericContainer<*>>
-                    val containerConfiguration = factoryHint.containerShell(Recycle.NEW, null, null)
+                    val typedFactory = factory as Container<GenericContainer<*>>
+                    val containerConfiguration = typedFactory.containerShell(Recycle.NEW, null, null)
                     val key = containerConfiguration.key("")
                     ContainerRegistry.register(containerConfiguration.component, key, containerConfiguration)
-                    logger.debug("Registered container factory for component: ${factoryHint.component}")
+                    logger.debug("Registered container factory for component: ${typedFactory.component}")
                 } catch (e: Exception) {
                     logger.error("Failed to register factory: ${factory::class.java.name}", e)
                 }

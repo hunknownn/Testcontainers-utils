@@ -9,7 +9,7 @@ spring-dependency-management = "1.1.7"
 spring-test = "6.2.10"
 
 # Testcontainers
-testcontainers = "1.20.4"
+testcontainers = "2.0.2"
 
 # Test
 kotest = "5.9.1"
@@ -31,9 +31,9 @@ spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-te
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring-test" }
 
 # Testcontainers
-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
-testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
-testcontainers-mongodb = { module = "org.testcontainers:mongodb", version.ref = "testcontainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "testcontainers" }
+testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
+testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb", version.ref = "testcontainers" }
 
 # Database
 postgresql = { module = "org.postgresql:postgresql" }

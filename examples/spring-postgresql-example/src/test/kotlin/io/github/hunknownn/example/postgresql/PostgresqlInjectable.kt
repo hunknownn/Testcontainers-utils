@@ -1,11 +1,11 @@
-package io.github.hunknownn.example
+package io.github.hunknownn.example.postgresql
 
 import io.testcontainers.utils.core.injectable.AbstractContainerPropertyInjector
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.MapPropertySource
 import org.testcontainers.postgresql.PostgreSQLContainer
 
-class ExampleInjectable : AbstractContainerPropertyInjector<PostgreSQLContainer>() {
+class PostgresqlInjectable : AbstractContainerPropertyInjector<PostgreSQLContainer>() {
 
     override val name = "example-postgresql"
 

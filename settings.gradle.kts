@@ -5,5 +5,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include("core")
 include("postgresql")
-include("spring-example")
 include("redis")
+
+// Examples
+include("examples")
+include("examples:spring-postgresql-example")
+include("examples:spring-redis-example")

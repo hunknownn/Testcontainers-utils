@@ -26,16 +26,18 @@ Testcontainers-Utils는 Spring Boot 테스트 환경에서 Testcontainers를 쉽
 **Gradle (Kotlin DSL)**
 ```kotlin
 dependencies {
-    testImplementation("io.github.hunknownn:testcontainers-utils-core:0.1.2")
-    testImplementation("io.github.hunknownn:testcontainers-utils-postgresql:0.1.2")
+   testImplementation("io.github.hunknownn:testcontainers-utils-core:0.1.4")
+   testImplementation("io.github.hunknownn:testcontainers-utils-postgresql:0.1.4")
+   testImplementation("io.github.hunknownn:testcontainers-utils-redis:0.1.4")
 }
 ```
 
 **Gradle (Groovy DSL)**
 ```groovy
 dependencies {
-    testImplementation 'io.github.hunknownn:testcontainers-utils-core:0.1.2'
-    testImplementation 'io.github.hunknownn:testcontainers-utils-postgresql:0.1.2'
+   testImplementation 'io.github.hunknownn:testcontainers-utils-core:0.1.4'
+   testImplementation 'io.github.hunknownn:testcontainers-utils-postgresql:0.1.4'
+   testImplementation 'io.github.hunknownn:testcontainers-utils-redis:0.1.4'
 }
 ```
 
@@ -44,77 +46,21 @@ dependencies {
 <dependency>
     <groupId>io.github.hunknownn</groupId>
     <artifactId>testcontainers-utils-core</artifactId>
-    <version>0.1.2</version>
+   <version>0.1.4</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>io.github.hunknownn</groupId>
     <artifactId>testcontainers-utils-postgresql</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.4</version>
     <scope>test</scope>
 </dependency>
-```
-
-### 기본 사용법
-
-#### 1. PostgreSQL 컨테이너 사용
-
-```kotlin
-@SpringBootTest
-@BootstrapTestcontainers(
-    properties = [
-        ContainerProperty(
-            component = Component.POSTGRESQL,
-            image = "postgres:16",
-            customizer = PostgresCustomizer::class
-        )
-    ]
-)
-class UserRepositoryTest {
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Test
-    fun `사용자를 저장하고 조회할 수 있다`() {
-        // PostgreSQL 컨테이너가 자동으로 시작되고 설정됨
-        val user = User(name = "홍길동", email = "hong@example.com")
-        val savedUser = userRepository.save(user)
-        assertNotNull(savedUser.id)
-    }
-}
-```
-
-#### 2. 커스터마이저 구현
-
-```kotlin
-class PostgresCustomizer : ContainerCustomizer<PostgreSQLContainer<*>> {
-    override fun customize(container: PostgreSQLContainer<*>) {
-        container.apply {
-            withDatabaseName("testdb")
-            withUsername("testuser")
-            withPassword("testpass")
-        }
-    }
-}
-```
-
-#### 3. 환경 변수 주입기 구현
-
-```kotlin
-class PostgresInjectable : AbstractContainerPropertyInjector<PostgreSQLContainer<*>>() {
-    override val name = "postgresql-properties"
-
-    override fun inject(container: PostgreSQLContainer<*>, environment: ConfigurableEnvironment) {
-        val properties = mutableMapOf<String, Any>(
-            "spring.datasource.url" to container.jdbcUrl,
-            "spring.datasource.username" to container.username,
-            "spring.datasource.password" to container.password,
-            "spring.datasource.driver-class-name" to container.driverClassName
-        )
-
-        inject(environment, MapPropertySource(name, properties))
-    }
-}
+<dependency>
+<groupId>io.github.hunknownn</groupId>
+<artifactId>testcontainers-utils-postgresql</artifactId>
+<version>0.1.4</version>
+<scope>test</scope>
+</dependency>
 ```
 
 ## 주요 개념
@@ -271,37 +217,12 @@ ApplicationContext refresh
     └─> 주입된 환경 변수로 빈 초기화
 ```
 
-## 모듈 구조
-
-### core
-핵심 기능을 제공하는 필수 모듈입니다.
-
-- `@BootstrapTestcontainers`: 컨테이너 자동 시작 어노테이션
-- `Container`: 컨테이너 팩토리 인터페이스
-- `ContainerCustomizer`: 컨테이너 커스터마이징 인터페이스
-- `ContainerPropertyInjector`: 환경 변수 주입 인터페이스
-- `TestcontainersBootstrapper`: 컨테이너 부트스트랩 로직
-- `ContainerRegistry`: 컨테이너 관리 레지스트리
-
-### postgresql
-PostgreSQL 컨테이너 지원 모듈입니다.
-
-- `PostgresContainerFactory`: PostgreSQL 컨테이너 팩토리
-- `PostgresCustomizer`: 기본 PostgreSQL 설정 커스터마이저
-- `Component.POSTGRESQL`: 사전 정의된 컴포넌트 타입
-
-### spring-example
-실제 사용 예제를 포함한 참고용 모듈입니다.
-
-- Spring Boot + JPA 환경에서의 사용 예제
-- 커스터마이저 및 주입기 구현 예제
-
 ## 요구사항
 
 - **Java**: 17 이상
 - **Kotlin**: 1.9.25 이상
 - **Spring Boot**: 3.x
-- **Testcontainers**: 1.x
+- **Testcontainers**: 2.x
 
 ## 라이선스
 

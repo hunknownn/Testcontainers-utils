@@ -1,5 +1,7 @@
-package io.github.hunknownn.example
+package io.github.hunknownn.example.postgresql
 
+import io.github.hunknownn.example.User
+import io.github.hunknownn.example.UserRepository
 import io.testcontainers.utils.core.annotation.BootstrapTestcontainers
 import io.testcontainers.utils.core.annotation.ContainerProperty
 import io.testcontainers.utils.core.core.Recycle
@@ -14,12 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest
 @BootstrapTestcontainers(
     properties = [
         ContainerProperty(
-//            recycle = Recycle.MERGE,
             recycle = Recycle.NEW,
             factoryHint = PostgresContainerFactory::class,
             image = "postgres:16",
-            customizer = ExampleCustomizer::class,
-            injectable = ExampleInjectable::class
+            customizer = PostgresqlCustomizer::class,
+            injectable = PostgresqlInjectable::class
         )
     ]
 )

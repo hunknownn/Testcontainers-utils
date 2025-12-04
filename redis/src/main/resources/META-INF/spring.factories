@@ -1,0 +1,2 @@
+io.testcontainers.utils.core.core.Container=\
+  io.testcontainers.utils.redis.RedisContainerFactory

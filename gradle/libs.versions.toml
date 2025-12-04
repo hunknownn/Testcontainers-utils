@@ -34,6 +34,7 @@ spring-test = { module = "org.springframework:spring-test", version.ref = "sprin
 testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql", version.ref = "testcontainers" }
 testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb", version.ref = "testcontainers" }
+testcontainers-redis = { module = "com.redis:testcontainers-redis", version = "2.2.2" }
 
 # Database
 postgresql = { module = "org.postgresql:postgresql" }

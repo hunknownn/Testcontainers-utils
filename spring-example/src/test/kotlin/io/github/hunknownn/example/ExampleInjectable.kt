@@ -3,13 +3,13 @@ package io.github.hunknownn.example
 import io.testcontainers.utils.core.injectable.AbstractContainerPropertyInjector
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.MapPropertySource
-import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.postgresql.PostgreSQLContainer
 
-class ExampleInjectable : AbstractContainerPropertyInjector<PostgreSQLContainer<*>>() {
+class ExampleInjectable : AbstractContainerPropertyInjector<PostgreSQLContainer>() {
 
     override val name = "example-postgresql"
 
-    override fun inject(container: PostgreSQLContainer<*>, environment: ConfigurableEnvironment) {
+    override fun inject(container: PostgreSQLContainer, environment: ConfigurableEnvironment) {
 
         val properties = mutableMapOf<String, Any>()
         properties["spring.jpa.hibernate.ddl-auto"] = "update"

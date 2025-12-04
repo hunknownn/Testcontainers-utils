@@ -14,7 +14,7 @@ import org.springframework.test.annotation.DirtiesContext
         ContainerProperty(
             component = Component.POSTGRESQL,
             image = "postgres:16",
-            customizer = PostgresCustomizer::class
+            customizer = PostgresqlCustomizer::class
         )
     ]
 )

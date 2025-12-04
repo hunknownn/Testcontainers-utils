@@ -5,7 +5,7 @@ import io.testcontainers.utils.core.core.ContainerConfiguration
 import io.testcontainers.utils.core.core.ContainerRegistry
 import io.testcontainers.utils.core.core.Recycle
 import io.testcontainers.utils.postgresql.PostgresContainerFactory
-import io.testcontainers.utils.postgresql.PostgresCustomizer
+import io.testcontainers.utils.postgresql.PostgresqlCustomizer
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.TestContext
 import org.springframework.test.context.support.AbstractTestExecutionListener
@@ -24,7 +24,7 @@ class ContainerRegisterer : AbstractTestExecutionListener() {
                 Recycle.MERGE,
                 PostgresContainerFactory::class,
                 PostgresContainerFactory().container(),
-                customize = { PostgresCustomizer() },
+                customize = { PostgresqlCustomizer() },
                 injectable = { _, _ -> },
             )
             ContainerRegistry.registerNewly(config.key(""), config)

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
         ContainerProperty(
             component = Component.POSTGRESQL,
             image = "postgres:16",
-            customizer = PostgresCustomizer::class
+            customizer = PostgresqlCustomizer::class
         )
     ]
 )

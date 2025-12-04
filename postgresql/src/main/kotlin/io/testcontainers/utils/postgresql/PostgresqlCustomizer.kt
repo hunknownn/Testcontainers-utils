@@ -1,14 +1,13 @@
-package io.github.hunknownn.example
+package io.testcontainers.utils.postgresql
 
 import io.testcontainers.utils.core.customizer.ContainerCustomizer
 import org.testcontainers.postgresql.PostgreSQLContainer
 
-class ExampleCustomizer : ContainerCustomizer<PostgreSQLContainer> {
+class PostgresqlCustomizer : ContainerCustomizer<PostgreSQLContainer> {
 
     override fun customize(container: PostgreSQLContainer) {
         container.apply {
-            container.withUsername("test")
-            container.withPassword("test")
+            withLabel("customizer", "PostgresqlCustomizer")
         }
     }
 }
